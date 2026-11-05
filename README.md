@@ -1,0 +1,1 @@
+# Processador-de-Opera-es-Bancarias
