@@ -12,7 +12,7 @@ public class GeradorDeMassa {
         String[] ratings = {"A", "A", "B", "B", "C"}; 
         Random random = new Random();
 
-        System.out.println("⏳ Gerando " + totalLinhas + " transações...");
+        System.out.println("Gerando " + totalLinhas + " transacoes para teste...");
         long tempoInicio = System.currentTimeMillis();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
@@ -22,7 +22,7 @@ public class GeradorDeMassa {
                 String valor = (random.nextInt(50000) + 1000) + ".00"; 
                 String rating = ratings[random.nextInt(ratings.length)];
 
-                // Força um boleto duplicado a cada 1000 linhas
+                // Forca um boleto duplicado a cada 1000 linhas
                 if (i % 1000 == 0) { 
                     id = "TX-" + (i - 1); 
                 }
@@ -34,11 +34,11 @@ public class GeradorDeMassa {
             long tempoFim = System.currentTimeMillis();
             File arquivo = new File(nomeArquivo);
             
-            System.out.println("✅ Arquivo gerado em " + (tempoFim - tempoInicio) + "ms!");
-            System.out.println("📂 SALVO EM: " + arquivo.getAbsolutePath());
+            System.out.println("Arquivo gerado com sucesso (" + (tempoFim - tempoInicio) + "ms)");
+            System.out.println("Caminho do arquivo: " + arquivo.getAbsolutePath());
 
         } catch (IOException e) {
-            System.out.println("Erro ao gerar arquivo: " + e.getMessage());
+            System.out.println("Erro de I/O ao gerar massa de dados: " + e.getMessage());
         }
     }
 }
