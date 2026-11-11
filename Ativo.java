@@ -9,7 +9,7 @@ public class Ativo {
     public Ativo(String idTransacao, String cnpjEmissor, String valorStr, String ratingRisco) {
         this.idTransacao = idTransacao;
         this.cnpjEmissor = cnpjEmissor;
-        this.valor = new BigDecimal(valorStr); // Converte texto puro para dinheiro seguro
+        this.valor = new BigDecimal(valorStr); // Converter texto puro pra valores monetarios
         this.ratingRisco = ratingRisco;
     }
 
