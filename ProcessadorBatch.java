@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class MotorAltaPerformance {
+public class ProcessadorBatch {
 
     public static void main(String[] args) {
         String caminhoArquivo = "lote_500k.csv";
