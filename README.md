@@ -18,6 +18,6 @@ Processar grandes volumes de transações financeiras aplicando regras de compli
 3. **Prevenção de Fraude:** Rejeita e isola qualquer `ID_TRANSACAO` já processado.
 
 ## 🚀 Como Executar
-1. Compile os arquivos do projeto.
-2. Execute a classe `Main`.
-3. O sistema invocará o `GeradorDeMassa` para fabricar 500.000 registros locais de teste e, em seguida, acionará o `MotorAltaPerformance` para processar e gerar os relatórios de auditoria.
+1. Compile os arquivos do projeto com o comando: `javac *.java`
+2. Gere a massa de dados de teste (500 mil linhas) executando: `java GeradorDeMassa`
+3. Acione o processamento e veja o dashboard no terminal executando: `java MotorAltaPerformance`oria.
