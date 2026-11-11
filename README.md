@@ -8,7 +8,7 @@ Processar grandes volumes de transações financeiras aplicando regras de compli
 
 ## ⚙️ Arquitetura e Performance
 - **Leitura e Escrita em Buffer (Otimização de RAM):** O arquivo bruto não é carregado na memória, o processamento e a geração dos logs de auditoria ocorrem linha a linha via streams (I/O).
-- **Idempotência O(1):** Utilização de hashset para detecção e bloqueio de transações duplicadas
+- **Utilização de hashset para detecção e bloqueio de transações duplicadas
 - **Auditoria de Dados:** Separação automática entre títulos aprovados e recusados, gravando o motivo exato da recusa no log de saída.
 - **Teste de Estresse:** Capacidade de processar um lote de **500.000 transações** em aproximadamente **3 segundos**.
 
@@ -19,5 +19,5 @@ Processar grandes volumes de transações financeiras aplicando regras de compli
 
 ## 🚀 Como Executar
 1. Compile os arquivos do projeto com o comando: `javac *.java`
-2. Gere a massa de dados de teste (500 mil linhas) executando: `java GeradorDeMassa`
+2. Gere a massa de dados de teste (500 mil linhas) executando: `java ProcessadorBatch`
 3. Acione o processamento e veja o dashboard no terminal executando: `java MotorAltaPerformance`oria.
