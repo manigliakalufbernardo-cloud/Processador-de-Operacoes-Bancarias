@@ -11,12 +11,11 @@ public class MotorAltaPerformance {
     public static void main(String[] args) {
         String caminhoArquivo = "lote_500k.csv";
         
-        // Regras do Fundo (ANBIMA / CVM)
-        BigDecimal patrimonioFundo = new BigDecimal("1000000000.00"); // 1 Bilhão
-        BigDecimal limiteCnpj = patrimonioFundo.multiply(new BigDecimal("0.20")); // Máx 20%
-        BigDecimal limiteRiscoC = patrimonioFundo.multiply(new BigDecimal("0.15")); // Máx 15%
+        // Regras da (ANBIMA / CVM)
+        BigDecimal patrimonioFundo = new BigDecimal("1000000000.00"); // bilhão
+        BigDecimal limiteCnpj = patrimonioFundo.multiply(new BigDecimal("0.20")); // Max de 20%
+        BigDecimal limiteRiscoC = patrimonioFundo.multiply(new BigDecimal("0.15")); // Max de 15%
 
-        // Estruturas de Memória para Alta Velocidade
         Set<String> idsProcessados = new HashSet<>(); 
         Map<String, BigDecimal> exposicaoCnpj = new HashMap<>(); 
         
@@ -37,7 +36,7 @@ public class MotorAltaPerformance {
                 BigDecimal valor = new BigDecimal(dados[2]);
                 String rating = dados[3];
 
-                // 1. IDEMPOTÊNCIA (Bloqueia Duplicados em tempo O(1))
+                // Bloquear Duplicados 
                 if (!idsProcessados.add(id)) {
                     duplicados++;
                     continue; 
@@ -45,7 +44,7 @@ public class MotorAltaPerformance {
 
                 boolean elegivel = true;
 
-                // 2. REGRA DE RISCO C
+                //calculo de risco
                 if (rating.equals("C")) {
                     BigDecimal novaExposicaoC = totalRiscoCAtual.add(valor);
                     if (novaExposicaoC.compareTo(limiteRiscoC) > 0) {
@@ -55,7 +54,7 @@ public class MotorAltaPerformance {
                     }
                 }
 
-                // 3. REGRA DE CONCENTRAÇÃO CNPJ
+                // regra CNPJ
                 if (elegivel) {
                     BigDecimal exposicaoAtualCnpj = exposicaoCnpj.getOrDefault(cnpj, BigDecimal.ZERO);
                     BigDecimal novaExposicaoCnpj = exposicaoAtualCnpj.add(valor);
@@ -67,7 +66,6 @@ public class MotorAltaPerformance {
                     }
                 }
 
-                // FECHAMENTO DA TRANSAÇÃO
                 if (elegivel) {
                     aprovados++;
                     valorTotalAprovado = valorTotalAprovado.add(valor);
@@ -81,7 +79,7 @@ public class MotorAltaPerformance {
 
         long tempoFim = System.currentTimeMillis();
 
-        // O DASHBOARD FINAL
+        // dashboard pra usuario
         System.out.println("\n==================================================");
         System.out.println(" RELATÓRIO DE LIQUIDAÇÃO FIDC - KANASTRA ENGINE");
         System.out.println("==================================================");
