@@ -11,8 +11,8 @@ public class MotorAltaPerformance {
     public static void main(String[] args) {
         String caminhoArquivo = "lote_500k.csv";
         
-        // Regras da (ANBIMA / CVM)
-        BigDecimal patrimonioFundo = new BigDecimal("1000000000.00"); // bilhão
+        // Regras de negocio padrao (ANBIMA / CVM)
+        BigDecimal patrimonioFundo = new BigDecimal("1000000000.00"); // 1 bilhao
         BigDecimal limiteCnpj = patrimonioFundo.multiply(new BigDecimal("0.20")); // Max de 20%
         BigDecimal limiteRiscoC = patrimonioFundo.multiply(new BigDecimal("0.15")); // Max de 15%
 
@@ -23,7 +23,7 @@ public class MotorAltaPerformance {
         int aprovados = 0, recusados = 0, duplicados = 0;
         BigDecimal valorTotalAprovado = BigDecimal.ZERO;
 
-        System.out.println("🚀 Iniciando Motor Kanastra (Leitura em Buffer)...");
+        System.out.println("Iniciando rotina de processamento batch...");
         long tempoInicio = System.currentTimeMillis();
 
         try (BufferedReader leitor = new BufferedReader(new FileReader(caminhoArquivo))) {
@@ -44,7 +44,7 @@ public class MotorAltaPerformance {
 
                 boolean elegivel = true;
 
-                //calculo de risco
+                // Calculo de limite de risco
                 if (rating.equals("C")) {
                     BigDecimal novaExposicaoC = totalRiscoCAtual.add(valor);
                     if (novaExposicaoC.compareTo(limiteRiscoC) > 0) {
@@ -54,7 +54,7 @@ public class MotorAltaPerformance {
                     }
                 }
 
-                // regra CNPJ
+                // Regra de concentracao por CNPJ
                 if (elegivel) {
                     BigDecimal exposicaoAtualCnpj = exposicaoCnpj.getOrDefault(cnpj, BigDecimal.ZERO);
                     BigDecimal novaExposicaoCnpj = exposicaoAtualCnpj.add(valor);
@@ -74,21 +74,21 @@ public class MotorAltaPerformance {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Erro fatal no processamento: " + e.getMessage());
+            System.out.println("Erro fatal na execucao do lote: " + e.getMessage());
         }
 
         long tempoFim = System.currentTimeMillis();
 
-        // dashboard pra usuario
-        System.out.println("\n==================================================");
-        System.out.println(" RELATÓRIO DE LIQUIDAÇÃO FIDC - KANASTRA ENGINE");
-        System.out.println("==================================================");
-        System.out.println("⏱️ Tempo de Execução: " + (tempoFim - tempoInicio) + " ms");
-        System.out.println("📂 Linhas Processadas: " + (aprovados + recusados + duplicados));
-        System.out.println("✅ Títulos Aprovados: " + aprovados);
-        System.out.println("❌ Títulos Recusados (Regras): " + recusados);
-        System.out.println("⚠️ Títulos Duplicados (Ignorados): " + duplicados);
-        System.out.println("💰 Volume Financeiro Aprovado: R$ " + valorTotalAprovado);
-        System.out.println("==================================================");
+        // Relatorio final de execucao
+        System.out.println("\n--------------------------------------------------");
+        System.out.println(" RELATORIO DE LIQUIDACAO FIDC - MODULO BATCH");
+        System.out.println("--------------------------------------------------");
+        System.out.println("Tempo de Execucao (ms): " + (tempoFim - tempoInicio));
+        System.out.println("Total de Linhas Lidas: " + (aprovados + recusados + duplicados));
+        System.out.println("Titulos Aprovados: " + aprovados);
+        System.out.println("Titulos Recusados (Regra): " + recusados);
+        System.out.println("Titulos Duplicados (Drop): " + duplicados);
+        System.out.println("Volume Financeiro Aprovado: R$ " + valorTotalAprovado);
+        System.out.println("--------------------------------------------------");
     }
 }
